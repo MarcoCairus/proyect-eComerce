@@ -9,17 +9,17 @@ export const renderNav = (element) => {
     const filterButton = document.createElement('button');
     categoryButton.id = 'categoryButton'
     filterButton.id = 'filterButton'
-    categoryButton.innerText = 'Categorys'
+    categoryButton.innerText = 'Categories'
     filterButton.innerText = 'Filter'
     nav.append(categoryButton, filterButton);
     const ul = document.createElement('ul');
 
 
     ul.innerHTML = `
-    <li><a id = "a1"  class = "invisible " href = "render-categorys.js">Mens Clothing</a></li> 
-    <li><a id = "a2"  class = "invisible " href = "*">Jewelery</a></li>
-    <li><a id = "a3"  class = "invisible " href = "*">Electronics</a></li>
-    <li><a id = "a4"  class = "invisible " href = "*">Women Clothing</a></li>
+    <li><a id = "a1"  class = "invisible  men's clothing" href = "#">Men Clothing</a></li> 
+    <li><a id = "a2"  class = "invisible jewelery" href = "#">Jewelery</a></li>
+    <li><a id = "a3"  class = "invisible electronics" href = "#">Electronics</a></li>
+    <li><a id = "a4"  class = "invisible women's clothing" href = "#">Women Clothing</a></li>
     `
     
         nav.appendChild(ul)
@@ -48,8 +48,12 @@ export const renderNav = (element) => {
         }
     })
 
-    categoryButton.addEventListener('click', () => {
-        renderCategorys(element)
+    document.querySelectorAll('li > a').forEach(elem => {
+        elem.addEventListener('click', () => {
+            let category = elem.classList.value;
+            console.log(category);
+            renderCategorys(category);
+        })
     })
 
 }
