@@ -1,60 +1,67 @@
+import { comerceApp } from "../index.js/ecommerce-app";
 import { } from "../style.css";
+import { loadCategories } from "../usecases/load-categories";
 import { renderCategorys } from "./render-categorys";
-export const renderNav = (element) => {
+import { renderProducts } from "./render-products";
+export const renderNav = async (element) => {
     const title = document.createElement('h1')
     title.innerText = 'e-Commerce'
     const header = document.createElement('header');
     const nav = document.createElement('nav');
-    const categoryButton = document.createElement('button');
+    const home = document.createElement('button');
     const filterButton = document.createElement('button');
+    const categoryButton = document.createElement('button');
+    home.id = 'home'
     categoryButton.id = 'categoryButton'
     filterButton.id = 'filterButton'
+    home.innerText = 'Home'
     categoryButton.innerText = 'Categories'
     filterButton.innerText = 'Filter'
-    nav.append(categoryButton, filterButton);
+    nav.append(home, categoryButton, filterButton);
     const ul = document.createElement('ul');
+    ul.classList.add('invisible')
+    nav.appendChild(ul)
+    header.appendChild(title);
+    header.appendChild(nav);
+    element.append(header);
+    const principalSection = document.createElement('section');
+    element.append(principalSection)
+    const arrayCategories = await loadCategories();
+
+    arrayCategories.forEach(e => {
+
+        ul.innerHTML += `<li><a id = "a1"  class = "${e}" href = "#">${e}</a></li> `
+    })
 
 
-    ul.innerHTML = `
-    <li><a id = "a1"  class = "invisible  men's clothing" href = "#">Men Clothing</a></li> 
-    <li><a id = "a2"  class = "invisible jewelery" href = "#">Jewelery</a></li>
-    <li><a id = "a3"  class = "invisible electronics" href = "#">Electronics</a></li>
-    <li><a id = "a4"  class = "invisible women's clothing" href = "#">Women Clothing</a></li>
-    `
-    
-        nav.appendChild(ul)
-        header.appendChild(title);
-        header.appendChild(nav);
-        element.append(header);
+
+
+
+    home.addEventListener('click', () => {
+        renderProducts();
+    })
+
     let count = 1;
 
     categoryButton.addEventListener('click', () => {
         if (count % 2 === 1) {
-            for (let i = 0; i < 4; i++) {
-    
-                document.querySelector('.invisible').classList.remove('invisible')
-            }
-            count++
-    
+            ul.classList.remove('invisible')
+            count++;
         }
         else {
-            for (let i = 0; i < 4; i++) {
-                document.querySelector('#a1').classList.add('invisible');
-                document.querySelector('#a2').classList.add('invisible');
-                document.querySelector('#a3').classList.add('invisible');
-                document.querySelector('#a4').classList.add('invisible');
-            }
-            count++
+            ul.classList.add('invisible');
+            count++;
         }
     })
 
     document.querySelectorAll('li > a').forEach(elem => {
         elem.addEventListener('click', () => {
             let category = elem.classList.value;
-            console.log(category);
             renderCategorys(category);
         })
     })
+
+
 
 }
 

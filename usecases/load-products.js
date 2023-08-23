@@ -6,6 +6,5 @@ export const loadProducts = async () => {
     const response = await fetch(url)
     const data = await response.json();
     const productData = data.map(productModel);
-    //console.log(productData);
     return productData;
 }

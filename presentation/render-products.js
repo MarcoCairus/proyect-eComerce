@@ -1,12 +1,22 @@
+import { productModel } from "../mappers/product-model";
 import { loadProducts } from "../usecases/load-products";
+import { specificProduct } from "./render-specific-product";
 
 
 
-export const renderProducts = async element => {
-    const principalSection = document.createElement('section');
-    element.append(principalSection)
-    const dataProducts = await loadProducts()
-    dataProducts.forEach(index => {
-        principalSection.innerHTML += `<article><p> <img src="${index.image}" width="50" height="50"> Title: ${index.title}<br> Price: ${index.price}</p></article>`
-    });
+export const renderProducts = async () => {
+    const section = document.querySelector('section')
+    const dataProducts = await loadProducts();
+    section.innerHTML = '';
+    dataProducts.forEach(e => {
+        section.innerHTML += `<article id="${e.id}"><p><img src="${e.image}" width="50" height="50"> Title: ${e.title}<br> Price: ${e.price}</p></article>`
+    })
+
+    document.querySelectorAll('article').forEach(async e => {
+        e.addEventListener('click', async event => {
+            event.stopPropagation();
+            let id = event.currentTarget.id
+            await specificProduct(id)
+        })
+    })
 } 
